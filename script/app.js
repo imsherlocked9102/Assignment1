@@ -1,40 +1,29 @@
 (function() {
-  'use strict';
-  angular
-    .module('LunchCheck', [])
-    .controller('LunchCheckController', LunchCheckController);
+'use strict';
 
-    LunchCheckController.$inject = ['$scope'];
+angular.module('appModule1', [])
 
-    function LunchCheckController($scope) {
-      $scope.dishes = $scope.dishes;
-      $scope.numberOfDishes;
-      $scope.message = "";
-      $scope.messageType = "";
+    .controller('appControllerModule1', function($scope) {
+        
+        $scope.items = [];
+        $scope.message = '';
+        $scope.classChecker = null;
+        $scope.whiteSpaceChecker = false;
 
-      $scope.checkIfTooMuch = function() {
-        if(!$scope.dishes) {
-          $scope.message = "Please enter data first";
-          $scope.messageType = 'alert-success'
-        } else if (checkDishesLength($scope.dishes) < 4) {
-          $scope.message = "Enjoy!";
-          $scope.messageType = 'alert-success'
-        } else {
-          $scope.message = "Too much!";
-          $scope.messageType = 'alert-danger'
+        $scope.getItems = function() {
+            if (!$scope.items || !$scope.items.length) {
+                $scope.message = 'Please enter data first.';
+                $scope.classChecker = false;
+            } else {
+                var tempTotal = $scope.items.split(',');
+                $scope.classChecker = true;
+                    if (tempTotal.length > 3) {
+                        $scope.message = 'Too much!';
+                    } else {
+                        $scope.message = 'Enjoy';
+                    }
+            }
         }
-      };
+    });
 
-      function checkDishesLength(dishes) {
-        var dishesArr = dishes.split(",");
-        angular.forEach(dishesArr, function(value, key) {
-          console.log("value: " + value);
-          if(!value || value == " ") {
-            console.log("Remove the value: " + value);
-            dishesArr.splice(key, 1);
-          }
-        });
-        return dishesArr.length;
-      }
-    }
 })();
